@@ -3,6 +3,7 @@
 ## 1. Screenshots or video of your application running on Godwoken.
 
 ![](application.png)
+![](success.png)
 
 ## 2. Link to the GitHub repository with your application which has been ported to Godwoken
 
