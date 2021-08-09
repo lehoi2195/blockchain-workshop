@@ -2,7 +2,9 @@
 
 ## 1. A screenshot or video of your EVM application on Layer 2 with Force Bridge support.
 
-[Layer 2 with Force Bridge support](https://vimeo.com/584956347)
+[Video -- Layer 2 with Force Bridge support](https://vimeo.com/584956347)
+
+Image
 ![](force_bridge.png)
 
 ## 2. The address of the SUDT-ERC20 Proxy Contract that you deployed
