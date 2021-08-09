@@ -9,9 +9,12 @@
 https://github.com/lehoi2195/blockchain-workshop
 
 ## 3. If you deployed any smart contracts as part of this tutorial, please provide the transaction hash of the deployment transaction, the deployed contract address, and the ABI of the deployed smart contract
-    
+
 Deployed contract address: `0x2F42F66BD93A745b22A0ac27042de4FEe54AE981`
+
 Deploy transaction hash: `0xfb9e670ccd16c94d86e361f2b0219fbbe2aed5acffcde328126f895ba76bd34e`
+
+ABI of the deployed smart contract
 
 ```
 [
