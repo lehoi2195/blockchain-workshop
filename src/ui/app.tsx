@@ -55,11 +55,17 @@ export function App() {
     const [deployTxHash, setDeployTxHash] = useState<string | undefined>();
     const [polyjuiceAddress, setPolyjuiceAddress] = useState<string | undefined>();
     const [transactionInProgress, setTransactionInProgress] = useState(false);
+    const [depositAddress, setDepositAddress] = useState<string | undefined>();
     const toastId = React.useRef(null);
     useEffect(() => {
         if (accounts?.[0]) {
             const addressTranslator = new AddressTranslator();
             setPolyjuiceAddress(addressTranslator.ethAddressToGodwokenShortAddress(accounts?.[0]));
+            addressTranslator
+                .getLayer2DepositAddress(web3, (window as any).ethereum.selectedAddress)
+                .then(depositAddr => {
+                    setDepositAddress(depositAddr.addressString);
+                });
         } else {
             setPolyjuiceAddress(undefined);
         }
@@ -191,6 +197,15 @@ export function App() {
             Your Polyjuice address: <b>{polyjuiceAddress ?? ' - '}</b>
             <br />
             <br />
+            <br />
+            Layer 2 Deposit address: <b>{depositAddress || ' - '}</b>
+            <br />
+            Deposit to L2 at:{' '}
+            <a href="https://force-bridge-test.ckbapp.dev/bridge/Ethereum/Nervos">Force Bridge</a>
+            . Please fill the Receiver address with your L2 Deposit address on the above.
+            <br />
+            <br />
+            <br />
             Nervos Layer 2 balance:{' '}
             <b>{l2Balance ? (l2Balance / 10n ** 8n).toString() : <LoadingIndicator />} CKB</b>
             <br />
@@ -206,7 +221,7 @@ export function App() {
                 read stored value from smart contract or set a new one. You can do that using the
                 interface below.
             </p>
-            <button class="button button3" onClick={deployContract} disabled={!l2Balance}>
+            <button onClick={deployContract} disabled={!l2Balance}>
                 Deploy contract
             </button>
             &nbsp;or&nbsp;
@@ -225,11 +240,10 @@ export function App() {
                 <>&nbsp;&nbsp;Your Token Balance: {userTokenBalance.toString()}</>
             ) : null}
             <br />
-            <button class="button button1" onClick={getBlanceOfAddress} disabled={!contract}>
+            <button onClick={getBlanceOfAddress} disabled={!contract}>
                 Get Balance
             </button>
             <input
-                class="input"
                 type="string"
                 placeholder="enter address"
                 onChange={e => setBalanceOfAddress(e.target.value)}
@@ -238,11 +252,10 @@ export function App() {
             <br />
             <br />
             <br />
-            <button class="button button2" onClick={transfer} disabled={!contract}>
+            <button onClick={transfer} disabled={!contract}>
                 Transfer
             </button>
             <input
-                class="input"
                 type="string"
                 placeholder="enter address"
                 onChange={e => setTransferToAddress(e.target.value)}
