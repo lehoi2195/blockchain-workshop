@@ -5,11 +5,11 @@
 [Video -- Layer 2 with Force Bridge support](https://vimeo.com/584957934)
 
 Image
-![](force_bridge.png)
+![](force_balanceOf.png)
 
 ## 2. The address of the SUDT-ERC20 Proxy Contract that you deployed
 
-`0x231369129f77590364D6e8EF9317274366Dd9AF2`
+`0xDF40A46D265d28fa623F43a276cCA1A4Dc3c16Bc`
 
 ## 3. A link to the GitHub repository with your EVM application that integrates Force Bridge support.
 
