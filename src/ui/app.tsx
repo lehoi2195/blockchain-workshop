@@ -11,6 +11,7 @@ import { AddressTranslator } from 'nervos-godwoken-integration';
 
 import { LeHoiTokenWrapper } from '../lib/contracts/LeHoiTokenWrapper';
 import { CONFIG } from '../config';
+import * as ERC20JSON from '../../build/contracts/ERC20.json';
 
 async function createWeb3() {
     // Modern dapp browsers...
@@ -56,7 +57,34 @@ export function App() {
     const [polyjuiceAddress, setPolyjuiceAddress] = useState<string | undefined>();
     const [transactionInProgress, setTransactionInProgress] = useState(false);
     const [depositAddress, setDepositAddress] = useState<string | undefined>();
+    const [balanceOf, setBalanceOf] = useState<bigint>();
     const toastId = React.useRef(null);
+
+    const getSUDTBalance = async (_accounts: any) => {
+        const _web3 = await createWeb3();
+        setWeb3(_web3);
+        const addressTranslator = new AddressTranslator();
+        const contractProxy = new _web3.eth.Contract(
+            ERC20JSON.abi as any,
+            '0xDF40A46D265d28fa623F43a276cCA1A4Dc3c16Bc' // ckETH contract, SUDTID 30
+        );
+
+        const getSudtBalance = async () => {
+            console.log('call');
+            const _sudtBalance = await contractProxy.methods
+                .balanceOf(addressTranslator.ethAddressToGodwokenShortAddress(_accounts[0]))
+                .call({
+                    from: _accounts[0]
+                });
+            console.log('_sudtBalance', _sudtBalance);
+            setBalanceOf(_sudtBalance);
+
+            setTimeout(getSudtBalance, 30000);
+        };
+
+        getSudtBalance();
+    };
+
     useEffect(() => {
         if (accounts?.[0]) {
             const addressTranslator = new AddressTranslator();
@@ -66,6 +94,7 @@ export function App() {
                 .then(depositAddr => {
                     setDepositAddress(depositAddr.addressString);
                 });
+            getSUDTBalance(accounts);
         } else {
             setPolyjuiceAddress(undefined);
         }
@@ -204,6 +233,9 @@ export function App() {
             <a href="https://force-bridge-test.ckbapp.dev/bridge/Ethereum/Nervos">Force Bridge</a>
             . Please fill the Receiver address with your L2 Deposit address on the above.
             <br />
+            <br />
+            <br />
+            ckETH Balance: <b>{balanceOf ? balanceOf.toString() : <LoadingIndicator />} ckETH</b>
             <br />
             <br />
             Nervos Layer 2 balance:{' '}
